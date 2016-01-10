@@ -138,3 +138,24 @@ def _one_hot_encode(ArrayData labels, int n_classes, int n, ArrayData out):
         nnet.one_hot_encode(int_ptr(labels), n_classes, n, float_ptr(out))
     else:
         raise ValueError('type %s not implemented' % str(out.dtype))
+
+def _copy_rows(ArrayData rowids, int numrows, int rowsize, ArrayData
+        from_mat, ArrayData to_mat, int mapfrom):
+    if is_float(to_mat):
+        nnet.copy_rows(int_ptr(rowids), numrows, rowsize,
+                float_ptr(from_mat), float_ptr(to_mat), mapfrom)
+    else:
+        raise ValueError('type %s not implemented' % str(to_mat.dtype))
+
+def _copy_sum_rows(ArrayData rowids, int numsums, int numrows, int rowsize,
+        ArrayData from_mat, ArrayData to_mat, int mapfrom, ArrayData coefdata,
+        float constant, float var):
+    cdef float *coefficients=NULL
+    if coefdata is not None:
+        coefficients=float_ptr(coefdata)
+    if is_float(to_mat):
+        nnet.copy_sum_rows(int_ptr(rowids), numsums, numrows, rowsize,
+                float_ptr(from_mat), float_ptr(to_mat), mapfrom,
+                coefficients, constant, var)
+    else:
+        raise ValueError('type %s not implemented' % str(to_mat.dtype))

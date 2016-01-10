@@ -37,3 +37,12 @@ cdef extern from 'cudarray/nnet/pool_b01.hpp' namespace 'cudarray':
 
 cdef extern from 'cudarray/nnet/one_hot.hpp' namespace 'cudarray':
     void one_hot_encode[T](const int *labels, int n_classes, int n, T *out)
+
+cdef extern from 'cudarray/nnet/one_hot.hpp' namespace 'cudarray':
+    void copy_rows[T](const int *rowids, int numrows, int rowsize, T *from_mat,
+            T *to_mat, int mapfrom)
+
+cdef extern from 'cudarray/nnet/one_hot.hpp' namespace 'cudarray':
+    void copy_sum_rows[T](const int *rowids, int numsums, 
+            int numrows, int rowsize, T *from_mat, T *to_mat, int mapfrom,
+            T *coefficients, float constant, float var)
